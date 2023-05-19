@@ -15,6 +15,6 @@ public class Education : BaseEntity
     public Guid UniversityGuid { get; set; }
     
     // Cardinality
-    public University University { get; set; }
-    public Employee Employee { get; set; }
+    public University? University { get; set; }
+    public Employee? Employee { get; set; }
 }
