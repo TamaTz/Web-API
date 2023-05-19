@@ -51,8 +51,8 @@ namespace API.Contexts
             //Relasi dari Akun Roles ke Akun (1 to Many)
             builder.Entity<AccountRole>()
                    .HasOne(a => a.Account)
-                   .WithMany(a => a.AccountRoles)
-                   .HasForeignKey(a => a.Guid);
+                   .WithMany(a => a.AccountRole)
+                   .HasForeignKey(a => a.AccountGuid);
 
             //Relasi dari Akun Role ke Role (1 to Many)
             builder.Entity<AccountRole>()

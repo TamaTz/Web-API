@@ -22,6 +22,6 @@ namespace API.Models
 
         //Cardinalitas dengan Employee,AccountRoles
         public Employee? Employee { get; set; }
-        public ICollection<AccountRole>? AccountRoles { get; set; }
+        public ICollection<AccountRole>? AccountRole { get; set; }
     }
 }

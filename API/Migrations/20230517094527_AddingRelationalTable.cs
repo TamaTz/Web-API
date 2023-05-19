@@ -33,7 +33,7 @@ namespace API.Migrations
             migrationBuilder.AddForeignKey(
                 name: "FK_tb_m_account_roles_tb_m_accounts_guid",
                 table: "tb_m_account_roles",
-                column: "guid",
+                column: "account_guid",
                 principalTable: "tb_m_accounts",
                 principalColumn: "guid",
                 onDelete: ReferentialAction.Cascade);

@@ -13,27 +13,60 @@ namespace API.Repositories
         }
         public AccountRole Create(AccountRole accountRole)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Set<AccountRole>().Add(accountRole);
+                _context.SaveChanges();
+                return accountRole;
+            }
+            catch
+            {
+                return new AccountRole();
+            }
         }
 
         public bool Delete(Guid guid)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var accountRole = GetByGuid(guid);
+                if (accountRole == null)
+                {
+                    return false;
+                }
+
+                _context.Set<AccountRole>().Remove(accountRole);
+                _context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public IEnumerable<AccountRole> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Set<AccountRole>().ToList();
         }
 
         public AccountRole? GetByGuid(Guid guid)
         {
-            throw new NotImplementedException();
+            return _context.Set<AccountRole>().Find(guid);
         }
 
         public bool Update(AccountRole accountRole)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Set<AccountRole>().Update(accountRole);
+                _context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

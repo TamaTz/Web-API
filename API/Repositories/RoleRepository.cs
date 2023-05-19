@@ -1,33 +1,74 @@
-﻿using API.Contracts;
+﻿using API.Contexts;
+using API.Contracts;
 using API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories
 {
     public class RoleRepository : IRoleRepository
     {
+        private readonly BookingManagementDbContext _context;
+        public RoleRepository(BookingManagementDbContext context)
+        {
+            _context = context;
+        }
+
         public Role Create(Role role)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Set<Role>().Add(role);
+                _context.SaveChanges();
+                return role;
+            }
+            catch
+            {
+                return new Role();
+            }
         }
 
         public bool Delete(Guid guid)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var role = GetByGuid(guid);
+                if (role == null)
+                {
+                    return false;
+                }
+
+                _context.Set<Role>().Remove(role);
+                _context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public IEnumerable<Role> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Set<Role>().ToList();
         }
 
         public Role? GetByGuid(Guid guid)
         {
-            throw new NotImplementedException();
+            return _context.Set<Role>().Find(guid);
         }
 
         public bool Update(Role role)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Set<Role>().Update(role);
+                _context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
