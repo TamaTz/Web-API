@@ -1,29 +1,28 @@
 ﻿using API.Contexts;
 using API.Contracts;
-using API.Models;
-using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace API.Repositories
 {
-    public class RoleRepository : IRoleRepository
+    public class GenericRepository<AllEntity> : IGenericRepository<AllEntity> where AllEntity : class
     {
         private readonly BookingManagementDbContext _context;
-        public RoleRepository(BookingManagementDbContext context)
+        public GenericRepository(BookingManagementDbContext context)
         {
             _context = context;
         }
 
-        public Role Create(Role role)
+        public AllEntity Create(AllEntity entity)
         {
             try
             {
-                _context.Set<Role>().Add(role);
+                _context.Set<AllEntity>().Add(entity);
                 _context.SaveChanges();
-                return role;
+                return entity;
             }
             catch
             {
-                return new Role();
+                return null;
             }
         }
 
@@ -31,13 +30,13 @@ namespace API.Repositories
         {
             try
             {
-                var role = GetByGuid(guid);
-                if (role == null)
+                var allentity = GetByGuid(guid);
+                if (allentity == null)
                 {
                     return false;
                 }
 
-                _context.Set<Role>().Remove(role);
+                _context.Set<AllEntity>().Remove(allentity);
                 _context.SaveChanges();
                 return true;
             }
@@ -47,21 +46,21 @@ namespace API.Repositories
             }
         }
 
-        public IEnumerable<Role> GetAll()
+        public IEnumerable<AllEntity> GetAll()
         {
-            return _context.Set<Role>().ToList();
+            return _context.Set<AllEntity>().ToList();
         }
 
-        public Role? GetByGuid(Guid guid)
+        public AllEntity GetByGuid(Guid guid)
         {
-            return _context.Set<Role>().Find(guid);
+            return _context.Set<AllEntity>().Find(guid);
         }
 
-        public bool Update(Role role)
+        public bool Update(AllEntity entity)
         {
             try
             {
-                _context.Set<Role>().Update(role);
+                _context.Set<AllEntity>().Update(entity);
                 _context.SaveChanges();
                 return true;
             }
