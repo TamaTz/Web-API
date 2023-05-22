@@ -1,5 +1,6 @@
 ﻿using API.Contracts;
 using API.Models;
+using API.View_Models.Employees;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -8,10 +9,12 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class EmployeeController : ControllerBase
     {
-        private readonly IGenericRepository<Employee> _employeeRepository;
-        public EmployeeController(IGenericRepository<Employee> employeeRepository)
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IMapper<Employee, EmployeeVM> _mapper;
+        public EmployeeController(IEmployeeRepository employeeRepository, IMapper<Employee, EmployeeVM> mapper)
         {
             _employeeRepository = employeeRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -22,8 +25,8 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(employees);
+            var resultConverted = employees.Select(_mapper.Map).ToList();
+            return Ok(resultConverted);
         }
 
         [HttpGet("{guid}")]
@@ -34,8 +37,8 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(employee);
+            var data = _mapper.Map(employee);
+            return Ok(data);
         }
 
         [HttpPost]
@@ -51,9 +54,10 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(Employee employee)
+        public IActionResult Update(EmployeeVM employeeVM)
         {
-            var isUpdated = _employeeRepository.Update(employee);
+            var employeeConverted = _mapper.Map(employeeVM);
+            var isUpdated = _employeeRepository.Update(employeeConverted);
             if (!isUpdated)
             {
                 return BadRequest();

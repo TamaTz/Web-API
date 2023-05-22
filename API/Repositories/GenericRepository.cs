@@ -1,21 +1,26 @@
 ﻿using API.Contexts;
 using API.Contracts;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Xml.Linq;
 
 namespace API.Repositories
 {
     public class GenericRepository<AllEntity> : IGenericRepository<AllEntity> where AllEntity : class
     {
-        private readonly BookingManagementDbContext _context;
+        protected readonly BookingManagementDbContext _context;
         public GenericRepository(BookingManagementDbContext context)
         {
             _context = context;
         }
-
-        public AllEntity Create(AllEntity entity)
+        public AllEntity? Create(AllEntity entity)
         {
             try
             {
+                typeof(AllEntity).GetProperty("CreatedDate")!
+                                 .SetValue(entity, DateTime.Now);
+                typeof(AllEntity).GetProperty("ModifiedDate")!
+                                 .SetValue(entity, DateTime.Now);
+
                 _context.Set<AllEntity>().Add(entity);
                 _context.SaveChanges();
                 return entity;
@@ -51,18 +56,35 @@ namespace API.Repositories
             return _context.Set<AllEntity>().ToList();
         }
 
-        public AllEntity GetByGuid(Guid guid)
+        public AllEntity? GetByGuid(Guid guid)
         {
-            return _context.Set<AllEntity>().Find(guid);
+            var entity = _context.Set<AllEntity>().Find(guid);
+            _context.ChangeTracker.Clear();
+            return entity;
         }
 
         public bool Update(AllEntity entity)
         {
             try
             {
+                var guid = (Guid)typeof(AllEntity).GetProperty("Guid")!
+                                                  .GetValue(entity)!;
+                var oldEntity = GetByGuid(guid);
+                if (oldEntity == null)
+                {
+                    return false;
+                }
+                var getCreatedDate = typeof(AllEntity).GetProperty("CreatedDate")!
+                                                      .GetValue(oldEntity)!;
+                
+                typeof(AllEntity).GetProperty("CreatedDate")!
+                                 .SetValue(entity, getCreatedDate);
+                typeof(AllEntity).GetProperty("ModifiedDate")!
+                                 .SetValue(entity, DateTime.Now);
                 _context.Set<AllEntity>().Update(entity);
                 _context.SaveChanges();
                 return true;
+
             }
             catch
             {

@@ -1,6 +1,7 @@
 ﻿using API.Contracts;
 using API.Models;
 using API.Repositories;
+using API.View_Models.Rooms;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -9,11 +10,13 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class RoomController : ControllerBase
     {
-        private readonly IGenericRepository<Room> _roomRepository;
+        private readonly IRoomRepository _roomRepository;
+        private readonly IMapper<Room, RoomVM> _mapper;
 
-        public RoomController(IGenericRepository<Room> roomRepository)
+        public RoomController(IRoomRepository roomRepository, IMapper<Room, RoomVM>mapper)
         {
             _roomRepository = roomRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -24,7 +27,8 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            return Ok(rooms);
+            var data = rooms.Select(_mapper.Map).ToList();
+            return Ok(data);
         }
 
         [HttpGet("{guid}")]
@@ -35,13 +39,15 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            return Ok(room);
+            var data = _mapper.Map(room);
+            return Ok(data);
         }
 
         [HttpPost]
-        public IActionResult Create(Room room)
+        public IActionResult Create(RoomVM roomVM)
         {
-            var result = _roomRepository.Create(room);
+            var roomConverted = _mapper.Map(roomVM);
+            var result = _roomRepository.Create(roomConverted);
             if (result is null)
             {
                 return BadRequest(result);
@@ -50,9 +56,10 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(Room room)
+        public IActionResult Update(RoomVM roomVM)
         {
-            var isUpdated = _roomRepository.Update(room);
+            var roomConverted = _mapper.Map(roomVM);
+            var isUpdated = _roomRepository.Update(roomConverted);
             if (!isUpdated)
             {
                 return BadRequest();
