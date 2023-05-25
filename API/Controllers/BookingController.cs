@@ -17,6 +17,45 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+
+        // Kelompok 4
+        [HttpGet("BookingDetail")]
+        public IActionResult GetAllBookingDetail()
+        {
+            try
+            {
+                var bookingDetails = _bookingRepository.GetAllBookingDetail();
+
+                return Ok(bookingDetails);
+
+            }
+            catch
+            {
+                return Ok("error");
+            }
+        }
+
+        [HttpGet("BookingDetailByGuid")]
+        public IActionResult GetDetailByGuid(Guid guid)
+        {
+            try
+            {
+                var booking = _bookingRepository.GetBookingDetailByGuid(guid);
+                if (booking is null)
+                {
+
+                    return NotFound();
+                }
+
+                return Ok(booking);
+            }
+            catch
+            {
+                return Ok("error");
+            }
+        }
+
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -74,6 +113,18 @@ namespace API.Controllers
                 return BadRequest();
             }
             return Ok();
+        }
+
+        [HttpGet("bookingduration")]
+        public IActionResult GetDuration()
+        {
+            var bookingLengths = _bookingRepository.GetBookingDuration();
+            if (!bookingLengths.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(bookingLengths);
         }
     }
 }

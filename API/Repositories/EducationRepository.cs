@@ -9,5 +9,10 @@ namespace API.Repositories
     {
         public EducationRepository(BookingManagementDbContext context) : base(context)
         { }
+
+        public Education GetByEmployeeId(Guid employeeId)
+        {
+            return _context.Set<Education>().Find(employeeId);
+        }
     }
 }
