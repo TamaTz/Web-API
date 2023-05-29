@@ -1,77 +1,135 @@
 ﻿using API.Contracts;
 using API.Models;
 using API.Repositories;
+using API.View_Models.Other;
 using API.View_Models.Rooms;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class RoomController : ControllerBase
+    public class RoomController : BaseController<Room, RoomVM>
     {
         private readonly IRoomRepository _roomRepository;
-        private readonly IEmployeeRepository _employeeRepository;
-        private readonly IBookingRepository _bookingRepository;
+
         private readonly IMapper<Room, RoomVM> _mapper;
 
         public RoomController(IRoomRepository roomRepository,
-            IMapper<Room, RoomVM>mapper,
-            IBookingRepository bookingRepository,
-            IEmployeeRepository employeeRepository)
+            IMapper<Room, RoomVM>mapper) : base(roomRepository, mapper)
         {
             _roomRepository = roomRepository;
             _mapper = mapper;
-            _bookingRepository = bookingRepository;
-            _employeeRepository = employeeRepository;
+
         }
 
-        [HttpGet("RoomsByDateTime")]
-        public IActionResult GetRoomsByDateTime(DateTime dateTime)
+        //kel 4
+        [HttpGet("AvailableRoom")]
+        public IActionResult GetAvailableRoom()
         {
-
-            var room = _roomRepository.GetAll();
-            var booking = _bookingRepository.GetAll();
-            var emp = _employeeRepository.GetAll();
-            var filteredRooms = booking.Where(booking => booking.StartDate <= dateTime && booking.EndDate >= dateTime).ToList();
-
-            var result = filteredRooms.Select(room => new
+            try
             {
+                var room = _roomRepository.GetAvailableRoom();
+                if (room is null)
+                {
+                    return NotFound(new ResponseVM<RoomBookedTodayVM>
+                    {
+                        Code = StatusCodes.Status404NotFound,
+                        Status = HttpStatusCode.NotFound.ToString(),
+                        Message = "Available Room not found",
+                        Data = null
+                    });
+                }
 
-                BookedBy = room.Employee.FirstName + " " + room.Employee.LastName,
-                Status = room.Status.ToString(),
-                RoomName = room.Room.Name,
-                Floor = room.Room.Floor,
-                Capacity = room.Room.Capacity,
-                StartDate = room.StartDate,
-                EndDate = room.EndDate
-            });
-
-            return Ok(result);
+                return Ok(new ResponseVM<IEnumerable<RoomBookedTodayVM>>
+                {
+                    Code = StatusCodes.Status200OK,
+                    Status = HttpStatusCode.OK.ToString(),
+                    Message = "Success",
+                    Data = room
+                });
+            }
+            catch
+            {
+                return BadRequest(new ResponseVM<RoomBookedTodayVM>
+                {
+                    Code = StatusCodes.Status400BadRequest,
+                    Status = HttpStatusCode.BadRequest.ToString(),
+                    Message = "Available Room Error",
+                    Data = null
+                });
+            }
         }
-        
+
+        //kel 1
+        [HttpGet("CurrentlyUsedRooms")]
+        public IActionResult GetCurrentlyUsedRooms()
+        {
+            var room = _roomRepository.GetCurrentlyUsedRooms();
+            if (room is null)
+            {
+                return NotFound(new ResponseVM<RoomUsedVM>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Room Used Not Found",
+                });
+            }
+
+            return Ok(new ResponseVM<IEnumerable<RoomUsedVM>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Found Data Used Room",
+                Data = room
+            });
+        }
+
         [HttpGet("CurrentlyUsedRoomsByDate")]
         public IActionResult GetCurrentlyUsedRooms(DateTime dateTime)
         {
             var room = _roomRepository.GetByDate(dateTime);
             if (room is null)
             {
-                return NotFound();
+                return NotFound(new ResponseVM<MasterRoomVM>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Currently Used Rooms By Date Not Found",
+                });
             }
-            return Ok(room);
+            return Ok(new ResponseVM<IEnumerable<MasterRoomVM>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Found Used Rooms By Date",
+                Data = room
+            });
         }
 
 
-        [HttpGet]
+       /* [HttpGet]
         public IActionResult GetAll()
         {
             var rooms = _roomRepository.GetAll();
             if (!rooms.Any())
             {
-                return NotFound();
+                return NotFound(new ResponseVM<RoomVM>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Not Found"
+                });
             }
             var data = rooms.Select(_mapper.Map).ToList();
-            return Ok(data);
+            return Ok(new ResponseVM<List<RoomVM>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Found Data Room",
+                Data = data
+            });
         }
 
         [HttpGet("{guid}")]
@@ -80,10 +138,21 @@ namespace API.Controllers
             var room = _roomRepository.GetByGuid(guid);
             if (room is null)
             {
-                return NotFound();
+                return NotFound(new ResponseVM<RoomVM>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Not Found Data Room"
+                });
             }
             var data = _mapper.Map(room);
-            return Ok(data);
+            return Ok(new ResponseVM<RoomVM>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Found By Guid",
+                Data = data
+            });
         }
 
         [HttpPost]
@@ -93,9 +162,19 @@ namespace API.Controllers
             var result = _roomRepository.Create(roomConverted);
             if (result is null)
             {
-                return BadRequest(result);
+                return BadRequest(new ResponseVM<RoomVM>
+                {
+                    Code = StatusCodes.Status400BadRequest,
+                    Status = HttpStatusCode.BadRequest.ToString(),
+                    Message = "Create Room Failed"
+                });
             }
-            return Ok(result);
+            return Ok(new ResponseVM<RoomVM>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Create Room Success"
+            });
         }
 
         [HttpPut]
@@ -105,9 +184,19 @@ namespace API.Controllers
             var isUpdated = _roomRepository.Update(roomConverted);
             if (!isUpdated)
             {
-                return BadRequest();
+                return BadRequest(new ResponseVM<RoomVM>
+                {
+                    Code = StatusCodes.Status400BadRequest,
+                    Status = HttpStatusCode.BadRequest.ToString(),
+                    Message = "Update Room Failed"
+                });
             }
-            return Ok();
+            return Ok(new ResponseVM<RoomVM>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Update Room Success"
+            });
         }
 
         [HttpDelete("{guid}")]
@@ -116,9 +205,19 @@ namespace API.Controllers
             var isDeleted = _roomRepository.Delete(guid);
             if (!isDeleted)
             {
-                return BadRequest();
+                return BadRequest(new ResponseVM<RoomVM>
+                {
+                    Code = StatusCodes.Status400BadRequest,
+                    Status = HttpStatusCode.BadRequest.ToString(),
+                    Message = "Delete Room Failed"
+                });
             }
-            return Ok();
-        }
+            return Ok(new ResponseVM<RoomVM>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Delete Room Success"
+            });
+        }*/
     }
 }

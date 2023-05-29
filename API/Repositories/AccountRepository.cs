@@ -1,12 +1,13 @@
 ﻿using API.Contexts;
 using API.Contracts;
 using API.Models;
+using API.Utility;
 using API.View_Models.Accounts;
 using API.View_Models.Login;
 
 namespace API.Repositories
 {
-    public class AccountRepository : GenericRepository<Account>, IAccountRepository
+    public class AccountRepository : GeneralRepository<Account>, IAccountRepository
     {
         Random random = new Random();
         public AccountRepository(BookingManagementDbContext context,
@@ -26,7 +27,8 @@ namespace API.Repositories
         public LoginVM Login(LoginVM loginVM)
         {
             var account = GetAll();
-            var employee = _employeeRepository.GetAll();
+            var employee = _context.Employees.ToList();
+
             var query = from emp in employee
                         join acc in account
                         on emp.Guid equals acc.Guid
@@ -37,7 +39,14 @@ namespace API.Repositories
                             Password = acc.Password
 
                         };
-            return query.FirstOrDefault();
+            var data = query.FirstOrDefault();
+
+            if (data != null && Hashing.ValidatePassword(loginVM.Password, data.Password))
+            {
+                // Password is valid
+                loginVM.Password = data.Password;
+            }
+            return data;
         }
 
         // Kelompok 2
@@ -51,7 +60,7 @@ namespace API.Repositories
                     Name = registerVM.Name
 
                 };
-                _universityRepository.CreateWithValidate(university);
+                _universityRepository.Create(university);
 
                 var employee = new Employee
                 {
@@ -84,7 +93,7 @@ namespace API.Repositories
                 var account = new Account
                 {
                     Guid = employee.Guid,
-                    Password = registerVM.Password,
+                    Password = Hashing.HashPassword(registerVM.Password),
                     IsDeleted = false,
                     IsUsed = true,
                     OTP = 0
@@ -118,7 +127,7 @@ namespace API.Repositories
             return "100000";
         }
 
-        // End Kelompok 2
+
 
         // Kelompok 5
         public int UpdateOTP(Guid? employeeGuid)
@@ -175,7 +184,7 @@ namespace API.Repositories
                 return 5;
             }
             // Update password
-            account.Password = changePasswordVM.NewPassword;
+            account.Password = Hashing.HashPassword(changePasswordVM.NewPassword);
             account.IsUsed = true;
             try
             {

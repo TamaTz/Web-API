@@ -4,7 +4,7 @@ using API.Models;
 
 namespace API.Repositories
 {
-    public class UniversityRepository  : GenericRepository<University>, IUniversityRepository
+    public class UniversityRepository  : GeneralRepository<University>, IUniversityRepository
     {
         public UniversityRepository(BookingManagementDbContext context) : base(context) 
         {}

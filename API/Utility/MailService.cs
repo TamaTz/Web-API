@@ -1,66 +1,65 @@
 ﻿using System.Net.Mail;
 using System.Net;
+using API.Contracts;
 
 namespace API.Utility
 {
     // Kelompok 5
-    public class Message
+    public class FluentEmail
     {
         public string Subject { get; set; }
-        public string Body { get; set; }
+        public string HtmlMessage { get; set; }
         public string Email { get; set; }
     }
 
-    public class MailService
+    public class EmailService : IEmailService
     {
-        private Message message;
-        private SmtpClient smtpClient;
+        private readonly string smtpServer;
+        private readonly int smtpPort;
+        private readonly string fromEmailAddress;
 
-        public MailService()
+        private FluentEmail fluentEmail = new();
+
+        public EmailService(string smtpServer, int smtpPort, string fromEmailAddress)
         {
-            message = new Message();
-            smtpClient = new SmtpClient("localhost", 25)
+            this.smtpServer = smtpServer;
+            this.smtpPort = smtpPort;
+            this.fromEmailAddress = fromEmailAddress;
+        }
+
+        public EmailService SetEmail(string email)
+        {
+            fluentEmail.Email = email;
+            return this;
+        }
+
+        public EmailService SetSubject(string subject)
+        {
+            fluentEmail.Subject = subject;
+            return this;
+        }
+
+        public EmailService SetHtmlMessage(string htmlMessage)
+        {
+            fluentEmail.HtmlMessage = htmlMessage;
+            return this;
+        }
+
+        public void SendEmailAsync()
+        {
+            var message = new MailMessage
             {
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                EnableSsl = false,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("", "") // No authentication required for Papercut
+                From = new MailAddress(fromEmailAddress),
+                Subject = fluentEmail.Subject,
+                Body = fluentEmail.HtmlMessage,
+                To = { fluentEmail.Email },
+                IsBodyHtml = true
             };
-        }
+            using var client = new SmtpClient(smtpServer, smtpPort);
+            client.Send(message);
 
-        public MailService WithSubject(string subject)
-        {
-            message.Subject = subject;
-            return this;
-        }
-
-        public MailService WithBody(string body)
-        {
-            message.Body = body;
-            return this;
-        }
-
-        public MailService WithEmail(string email)
-        {
-            message.Email = email;
-            return this;
-        }
-
-        public void Send()
-        {
-            MailMessage mailMessage = new MailMessage
-            {
-                From = new MailAddress("sender@example.com"),
-                Subject = message.Subject,
-                Body = message.Body,
-            };
-            mailMessage.To.Add(message.Email);
-
-            smtpClient.Send(mailMessage);
-
-            // Clean up resources
-            mailMessage.Dispose();
-            smtpClient.Dispose();
+            message.Dispose();
+            client.Dispose();
         }
     }
 }

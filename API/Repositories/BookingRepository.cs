@@ -2,13 +2,16 @@
 using API.Contracts;
 using API.Models;
 using API.View_Models.Bookings;
+using API.View_Models.Employees;
+using API.View_Models.Rooms;
 
 namespace API.Repositories
 {
-    public class BookingRepository : GenericRepository<Booking>, IBookingRepository
+    public class BookingRepository : GeneralRepository<Booking>, IBookingRepository
     {
         private readonly IRoomRepository _roomRepository;
-        public BookingRepository(BookingManagementDbContext context, IRoomRepository roomRepository) : base(context) 
+        public BookingRepository(BookingManagementDbContext context, 
+            IRoomRepository roomRepository) : base(context) 
         {
             _roomRepository = roomRepository;
         }
@@ -114,6 +117,16 @@ namespace API.Repositories
 
             }
             return results;
+        }
+
+        public IEnumerable<Booking> GetByRoomGuid(Guid roomGuid)
+        {
+            return _context.Set<Booking>().Where(r => r.RoomGuid == roomGuid);
+        }
+
+        public IEnumerable<Booking> GetByEmployeeGuid(Guid employeeGuid)
+        {
+            return _context.Set<Booking>().Where(e => e.EmployeeGuid == employeeGuid);
         }
     }
 }

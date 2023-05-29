@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 
 namespace API.Repositories
 {
-    public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
+    public class EmployeeRepository : GeneralRepository<Employee>, IEmployeeRepository
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEducationRepository _educationRepository;
@@ -76,7 +76,7 @@ namespace API.Repositories
 
         public EmpEdU? GetMasterEmployeeByGuid(Guid guid)
         {
-            var employee = _employeeRepository.GetByGuid(guid);
+            var employee = GetByGuid(guid);
             var education = _educationRepository.GetByGuid(guid);
             var university = _universityRepository.GetByGuid(education.UniversityGuid);
 

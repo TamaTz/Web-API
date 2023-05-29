@@ -7,17 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Repositories
 {
-    public class RoomRepository : GenericRepository<Room>, IRoomRepository
+    public class RoomRepository : GeneralRepository<Room>, IRoomRepository
     {
-        /*private readonly IBookingRepository _bookingRepository;
-        private readonly IEmployeeRepository _employeeRepository;
-        public RoomRepository(BookingManagementDbContext context,
-            IBookingRepository bookingRepository,
-            IEmployeeRepository employeeRepository) : base(context) 
-        {
-            _bookingRepository = bookingRepository;
-            _employeeRepository = employeeRepository;
-        }*/
+            /*private readonly IBookingRepository _bookingRepository;
+            private readonly IEmployeeRepository _employeeRepository;
+            public RoomRepository(BookingManagementDbContext context,
+                IBookingRepository bookingRepository,
+                IEmployeeRepository employeeRepository) : base(context) 
+            {
+                _bookingRepository = bookingRepository;
+                _employeeRepository = employeeRepository;
+            }*/
 
         public RoomRepository(BookingManagementDbContext context) : base(context) { }
         public IEnumerable<MasterRoomVM> GetByDate(DateTime dateTime)
@@ -73,7 +73,7 @@ namespace API.Repositories
                         RoomName = room.Name,
                         Status = booking.Status.ToString(),
                         Floor = room.Floor,
-                        BookedBy = employee.FirstName + " " + employee.LastName,
+                        BookedBy = employee.FirstName + " " + employee?.LastName,
                     };
                     usedRooms.Add(result);
                 }
@@ -127,6 +127,23 @@ namespace API.Repositories
             {
                 return null;
 
+            }
+        }
+
+        public string GetRoomStatus(Booking booking, DateTime dateTime)
+        {
+
+            if (booking.StartDate <= dateTime && booking.EndDate >= dateTime)
+            {
+                return "Occupied";
+            }
+            else if (booking.StartDate > dateTime)
+            {
+                return "Booked";
+            }
+            else
+            {
+                return "Available";
             }
         }
     }

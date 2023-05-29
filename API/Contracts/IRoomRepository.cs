@@ -11,6 +11,8 @@ namespace API.Contracts
 
         // Kelompok 4
         IEnumerable<RoomBookedTodayVM> GetAvailableRoom();
+        
+        public string GetRoomStatus(Booking booking, DateTime dateTime);
 
     }
 }

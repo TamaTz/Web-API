@@ -1,6 +1,6 @@
 ﻿namespace API.Contracts
 {
-    public interface IGenericRepository<AllEntity> where AllEntity : class
+    public interface IGenericRepository<AllEntity>
     {
         AllEntity? Create(AllEntity entity);
         bool Update(AllEntity entity);
