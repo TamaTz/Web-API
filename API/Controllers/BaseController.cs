@@ -1,5 +1,6 @@
 ﻿using API.Contracts;
 using API.Repositories;
+using API.Utility;
 using API.View_Models.Other;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Roles = $"{nameof(RoleLevel.Admin)} { nameof(RoleLevel.Manager)}")]
     public class BaseController<TModel, TViewModel> : ControllerBase
     {
         private readonly IGenericRepository<TModel> _repository;

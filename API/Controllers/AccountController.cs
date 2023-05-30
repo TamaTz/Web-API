@@ -6,6 +6,7 @@ using API.View_Models.Accounts;
 using API.View_Models.Login;
 using API.View_Models.Other;
 using API.View_Models.Rooms;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using System.Net;
@@ -45,6 +46,7 @@ namespace API.Controllers
         }
 
         // Kelompok 2
+        [AllowAnonymous]
         [HttpPost("Register")]
         public IActionResult Register(RegisterVM registerVM)
         {
@@ -94,7 +96,7 @@ namespace API.Controllers
             });
 
         }
-
+        [AllowAnonymous]
         [HttpPost("Login")]
         public IActionResult Login(LoginVM loginVM)
         {
@@ -217,6 +219,7 @@ namespace API.Controllers
         }
 
         // Kelompok 5
+        [AllowAnonymous]
         [HttpPost("ForgotPassword/email")]
         public IActionResult UpdateResetPass(String email)
         {

@@ -12,7 +12,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+
 public class UniversityController : BaseController<University, UniversityVM>
 {
     private readonly IUniversityRepository _universityRepository;

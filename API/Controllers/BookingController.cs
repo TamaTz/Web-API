@@ -2,6 +2,7 @@
 using API.Models;
 using API.View_Models.Bookings;
 using API.View_Models.Other;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -22,6 +23,7 @@ namespace API.Controllers
 
 
         // Kelompok 4
+        [Authorize(Roles = "Manager")]
         [HttpGet("BookingDetail")]
         public IActionResult GetAllBookingDetail()
         {

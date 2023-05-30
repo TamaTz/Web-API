@@ -95,6 +95,14 @@ namespace API.Repositories
 
                 Create(account);
 
+                var accountRole = new AccountRole
+                {
+                    RoleGuid = Guid.Parse("40ac62a2-392e-4eb2-2f69-08db60bf1e9a"),
+                    AccountGuid = employee.Guid
+                };
+
+                _context.AccountRoles.Add(accountRole);
+                _context.SaveChanges();
                 return 3;
 
             }
