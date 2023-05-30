@@ -9,11 +9,12 @@ namespace API.Contracts
 
         public EmpEdU? GetMasterEmployeeByGuid(Guid guid);
 
-        // Kelompok 2
-        int CreateWithValidate(Employee employee);
+        bool CheckEmailAndPhoneAndNIK(string value);
 
         // Kelompok 5
         Guid? FindGuidByEmail(string email);
+
+        public Employee GetByEmail(string email);
     }
 
 

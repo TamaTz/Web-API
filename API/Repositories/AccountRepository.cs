@@ -56,9 +56,8 @@ namespace API.Repositories
             {
                 var university = new University
                 {
-                    Code = registerVM.Code,
-                    Name = registerVM.Name
-
+                    Code = registerVM.UniversityCode,
+                    Name = registerVM.UniversityName
                 };
                 _universityRepository.Create(university);
 
@@ -73,12 +72,7 @@ namespace API.Repositories
                     Email = registerVM.Email,
                     PhoneNumber = registerVM.PhoneNumber,
                 };
-                var result = _employeeRepository.CreateWithValidate(employee);
-
-                if (result != 3)
-                {
-                    return result;
-                }
+                var result = _employeeRepository.Create(employee);
 
                 var education = new Education
                 {
@@ -199,6 +193,19 @@ namespace API.Repositories
             {
                 return 0;
             }
+        }
+
+        public IEnumerable<string> GetRoles(Guid guid)
+        {
+            var getAccount = GetByGuid(guid);
+
+            if (getAccount == null) return Enumerable.Empty<string>();
+            var getAccountRoles = from accountRoles in _context.AccountRoles
+                                  join roles in _context.Roles on accountRoles.RoleGuid equals roles.Guid
+                                  where accountRoles.AccountGuid == guid
+                                  select roles.Name;
+
+            return getAccountRoles.ToList();
         }
     }
 }

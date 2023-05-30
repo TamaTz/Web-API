@@ -145,5 +145,18 @@ namespace API.Repositories
 
         }
 
+        public bool CheckEmailAndPhoneAndNIK(string value)
+        {
+            return _context.Employees
+                           .Any(e => e.Email == value ||
+                                     e.PhoneNumber == value ||
+                                     e.Nik == value);
+        }
+
+        public Employee GetByEmail(string email)
+        {
+            var employee = _context.Set<Employee>().FirstOrDefault(e => e.Email == email);
+            return employee;
+        }
     }
 }

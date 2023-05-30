@@ -22,6 +22,7 @@ builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 
 builder.Services.AddSingleton(typeof(IMapper<,>), typeof(Mapper<,>));

@@ -5,8 +5,11 @@ using API.Utility;
 using API.View_Models.Accounts;
 using API.View_Models.Login;
 using API.View_Models.Other;
+using API.View_Models.Rooms;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using System.Net;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -19,13 +22,17 @@ namespace API.Controllers
         private readonly IEducationRepository _educationRepository;
         private readonly IUniversityRepository _universityRepository;
         private readonly IEmailService _emailService;
+        private readonly ITokenService _tokenService;
+        private readonly IRoleRepository _roleRepository;
         private readonly IMapper<Account, AccountVM> _mapper;
         public AccountController(IAccountRepository accountRepository,
             IMapper<Account, AccountVM> mapper,
             IEmailService emailService,
             IEducationRepository educationRepository,
             IUniversityRepository universityRepository,
-            IEmployeeRepository employeeRepository) : base(accountRepository, mapper)
+            IEmployeeRepository employeeRepository,
+            ITokenService tokenServiceRepository,
+            IRoleRepository roleRepository) : base(accountRepository, mapper)
         {
             _accountRepository = accountRepository;
             _employeeRepository = employeeRepository;
@@ -33,6 +40,8 @@ namespace API.Controllers
             _educationRepository = educationRepository;
             _universityRepository = universityRepository;
             _mapper = mapper;
+            _roleRepository = roleRepository;
+            _tokenService = tokenServiceRepository;
         }
 
         // Kelompok 2
@@ -90,6 +99,7 @@ namespace API.Controllers
         public IActionResult Login(LoginVM loginVM)
         {
             var account = _accountRepository.Login(loginVM);
+            var employee = _employeeRepository.GetByEmail(loginVM.Email);
 
             if (account == null)
             {
@@ -112,13 +122,28 @@ namespace API.Controllers
                     Data = null
                 });
             }
+            var claims = new List<Claim>
+                {
+                    new(ClaimTypes.NameIdentifier, employee.Nik),
+                    new(ClaimTypes.Name, $"{employee.FirstName} {employee.LastName}"),
+                    new(ClaimTypes.Email, employee.Email),
+                };
 
-            return Ok(new ResponseVM<LoginVM>
+            var roles = _accountRepository.GetRoles(employee.Guid);
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+            
+            var token = _tokenService.GenerateToken(claims);
+
+            return Ok(new ResponseVM<string>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
                 Message = "Login Success",
-                Data = null
+                Data = token
             });
 
         }
@@ -192,7 +217,7 @@ namespace API.Controllers
         }
 
         // Kelompok 5
-        [HttpPost("ForgotPassword" + "{email}")]
+        [HttpPost("ForgotPassword/email")]
         public IActionResult UpdateResetPass(String email)
         {
 
@@ -221,12 +246,8 @@ namespace API.Controllers
                         Data = null
                     });
                 default:
-                    var hasil = new AccountResetPasswordVM
-                    {
-                        Email = email,
-                        OTP = isUpdated
-                    };
 
+                        
                     _emailService.SetEmail(email)
                                  .SetSubject("Forgot Password")
                                  .SetHtmlMessage($"Your OTP is {isUpdated}")
@@ -236,11 +257,33 @@ namespace API.Controllers
                     {
                         Code = StatusCodes.Status200OK,
                         Status = HttpStatusCode.OK.ToString(),
-                        Message = "OTP Successfully Generated",
-                        Data = hasil
+                        Message = "OTP Successfully Sent to Email"
                     });
 
             }
+        }
+
+        [HttpGet("GetAllByToken")]
+        public IActionResult GetByToken(string token)
+        {
+            var data = _tokenService.ExtractClaimsFromJWT(token);
+            if (data is null)
+            {
+                return NotFound(new ResponseVM<ClaimVM>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Room Used Not Found",
+                });
+            }
+
+            return Ok(new ResponseVM<ClaimVM>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Found Data Used Room",
+                Data = data
+            });
         }
     }
 }

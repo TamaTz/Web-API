@@ -16,5 +16,8 @@ namespace API.Contracts
 
         //Kelompok 6
         int ChangePasswordAccount(Guid? employeeGuid, ChangePasswordVM changePasswordVM);
+
+        IEnumerable<string> GetRoles(Guid guid);
+
     }
 }
