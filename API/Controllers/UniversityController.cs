@@ -3,6 +3,7 @@ using API.Models;
 using API.View_Models.Educations;
 using API.View_Models.Other;
 using API.View_Models.Universities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Reflection.Metadata.Ecma335;
@@ -11,6 +12,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class UniversityController : BaseController<University, UniversityVM>
 {
     private readonly IUniversityRepository _universityRepository;

@@ -3,6 +3,7 @@ using API.Contracts;
 using API.Models;
 using API.Utility;
 using API.View_Models.Employees;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 
@@ -41,6 +42,7 @@ namespace API.Repositories
             return data;
         }
 
+        [Authorize]
         public IEnumerable<EmpEdU> GetAllMasterEmp()
         {
             var employees = GetAll();

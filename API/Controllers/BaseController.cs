@@ -1,6 +1,7 @@
 ﻿using API.Contracts;
 using API.Repositories;
 using API.View_Models.Other;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class BaseController<TModel, TViewModel> : ControllerBase
     {
         private readonly IGenericRepository<TModel> _repository;

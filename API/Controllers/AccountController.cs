@@ -263,17 +263,17 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetAllByToken")]
+        [HttpGet("GetClaims/{token}")]
         public IActionResult GetByToken(string token)
         {
             var data = _tokenService.ExtractClaimsFromJWT(token);
             if (data is null)
             {
-                return NotFound(new ResponseVM<ClaimVM>
+                return BadRequest(new ResponseVM<ClaimVM>
                 {
-                    Code = StatusCodes.Status404NotFound,
-                    Status = HttpStatusCode.NotFound.ToString(),
-                    Message = "Room Used Not Found",
+                    Code = StatusCodes.Status400BadRequest,
+                    Status = HttpStatusCode.BadRequest.ToString(),
+                    Message = "Token is invalid or expired",
                 });
             }
 
@@ -281,7 +281,7 @@ namespace API.Controllers
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "Found Data Used Room",
+                Message = "Claim has been retrieved",
                 Data = data
             });
         }
