@@ -1,0 +1,522 @@
+﻿@*@{
+    ViewData["Title"] = "List";
+    Layout = "_Layout";
+}
+<div class="container mt-5 pt-3">
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm" id="myTable">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="col-1 text-center">NO</th>
+                    <th scope="col">Pokemon Name</th>
+                    <th scope="col" class="col-2 text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody id="tablePoke">
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Button trigger modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="modalDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title namePoke" id="exampleModalLabel" style="text-transform: capitalize;">Modal Pokemon</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12 text-center">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Default</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Change Color</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="statistic-tab" data-bs-toggle="tab" href="#statistic" role="tab" aria-controls="statistic" aria-selected="false">Statistic Chart</button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                            <!-- Konten untuk tab "Default" -->
+                                        </div>
+                                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                            <!-- Konten untuk tab "Change Color" -->
+                                        </div>
+                                        <div class="tab-pane fade" id="statistic" role="tabpanel" aria-labelledby="statistic-tab">
+                                            <div class="radar-chart-container">
+                                                <canvas id="statsRadarChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                            <img src="" id="imgPoke2" width="200" height="200" alt="" />
+                                            <h2 class="namePoke" style="text-transform: capitalize;"></h2>
+                                        </div>
+                                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                            <img src="" id="imgPoke3" width="200" height="200" alt="" />
+                                            <h2 class="namePoke" style="text-transform: capitalize;"></h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2 mb-2">
+                                <div class="col-sm-12 text-center" id="types">
+                                </div>
+                            </div>
+                            <div class="row mt-4 mb-2">
+                                <div class="col-sm-4 text-center">
+                                    <button type="button" class="btn btn-info">
+                                        Height <span class="badge bg-black" id="height">4</span>
+                                    </button>
+                                </div>
+                                <div class="col-sm-4 text-center">
+                                    <button type="button" class="btn btn-warning">
+                                        Weight <span class="badge bg-black" id="weight">4</span>
+                                    </button>
+                                </div>
+                                <div class="col-sm-4 text-center">
+                                    <button type="button" class="btn btn-success">
+                                        Order <span class="badge bg-black" id="order">4</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 text-left">
+                                    <h6>Hp</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" id="hp" role="progressbar" aria-valuemin="20" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-sm-12 text-left">
+                                    <h6>Attack</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-danger" id="attack" role="progressbar" aria-valuemin="20" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-sm-12 text-left">
+                                    <h6>Defense</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" id="defense" role="progressbar" aria-valuemin="20" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-sm-12 text-left">
+                                    <h6>Special Attack</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-danger" id="special-attack" role="progressbar" aria-valuemin="20" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-sm-12 text-left">
+                                    <h6>Special Defense</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" id="special-defense" role="progressbar" aria-valuemin="20" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-sm-12 text-left">
+                                    <h6>Speed</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" id="speed" role="progressbar" aria-valuemin="20" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+*@
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "_Layout";
+}
+<div class="container mt-5 pt-3">
+    <div>
+        <table class="table table-striped table-hover" id="myTable">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="col-1 text-center">NO</th>
+                    <th scope="col">Pokemon Name</th>
+                    <th scope="col" class="col-2 text-center">Action</th>
+                    <th scope="col" class="col-1 text-center">Employee</th>
+                    <th scope="col" class="col-1 text-center">Order Pokemon</th>
+                </tr>
+            </thead>
+            <tbody id="tablePoke">
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Button trigger modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="modalDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title namePoke" id="exampleModalLabel" style="text-transform: capitalize;">
+                            Modal Pokemon
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12 text-center">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="profile-tab" data-bs-toggle="tab"
+                                                    href="#profile" role="tab" aria-controls="profile"
+                                                    aria-selected="true">
+                                                Default
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab"
+                                                    href="#contact" role="tab" aria-controls="contact"
+                                                    aria-selected="false">
+                                                Change Color
+                                            </button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="profile" role="tabpanel"
+                                             aria-labelledby="profile-tab">
+                                            <!-- Konten untuk tab "Default" -->
+                                            <img src="" id="imgPoke2" class="imgpoke" width="200" height="200" alt="" />
+                                            <h2 class="namePoke" style="text-transform: capitalize;"></h2>
+                                        </div>
+                                        <div class="tab-pane fade" id="contact" role="tabpanel"
+                                             aria-labelledby="contact-tab">
+                                            <!-- Konten untuk tab "Change Color" -->
+                                            <img src="" id="imgPoke3" class="imgpoke" width="200" height="200" alt="" />
+                                            <h2 class="namePoke" style="text-transform: capitalize;"></h2>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2 mb-2">
+                            <div class="col-sm-12 text-center" id="types">
+                            </div>
+                        </div>
+                        <div class="row mt-4 mb-2">
+                            <div class="col-sm-4 text-center">
+                                <button type="button" class="btn btn-info">
+                                    Height <span class="badge bg-black" id="height">4</span>
+                                </button>
+                            </div>
+                            <div class="col-sm-4 text-center">
+                                <button type="button" class="btn btn-warning">
+                                    Weight <span class="badge bg-black" id="weight">4</span>
+                                </button>
+                            </div>
+                            <div class="col-sm-4 text-center">
+                                <button type="button" class="btn btn-success">
+                                    Order <span class="badge bg-black" id="order">4</span>
+                                </button>
+                            </div>
+                                <div class="radar-chart-container">
+                                    <canvas id="statsRadarChart"></canvas>
+                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 text-left">
+                                <h6>Hp</h6>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" id="hp" role="progressbar" aria-valuemin="20"
+                                         aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-sm-12 text-left">
+                                <h6>Attack</h6>
+                                <div class="progress">
+                                    <div class="progress-bar bg-danger" id="attack" role="progressbar"
+                                         aria-valuemin="20" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-12 text-left">
+                                <h6>Defense</h6>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" id="defense" role="progressbar"
+                                         aria-valuemin="20" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-12 text-left">
+                                <h6>Special Attack</h6>
+                                <div class="progress">
+                                    <div class="progress-bar bg-danger" id="special-attack" role="progressbar"
+                                         aria-valuemin="20" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-12 text-left">
+                                <h6>Special Defense</h6>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" id="special-defense" role="progressbar"
+                                         aria-valuemin="20" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-12 text-left">
+                                <h6>Speed</h6>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" id="speed" role="progressbar" aria-valuemin="20"
+                                         aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderModalLabel">Add Order Pokemon</h5>
+                </div>
+                <div class="modal-body" id="o=orderModalBody">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <form class=" row needs-validation" novalidate>
+                            <div class="col-md-12">
+                                <label class="form-label">Customer Name </label>
+                                <input type="text" class="form-control" id="customer-name" name="customer-name" required/>
+                                <div class="invalid-feedback">
+                                    This Field Is Required
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Address: </label>
+                                <input type="text" class="form-control" id="address" name="address" required/>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please input your address.
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Order Date: </label>
+                                <input type="date" class="form-control" id="order-date" name="order-date" required/>
+
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Type: </label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="tipe-pokemon" id="tipe-pokemon" required />
+                                    <label class="form-check-label" for="tipe-pokemon">
+                                        Bug
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="tipe-pokemon" id="tipe-pokemon">
+                                    <label class="form-check-label" for="tipe-pokemon">
+                                        Dragon
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="tipe-pokemon" id="tipe-pokemon">
+                                    <label class="form-check-label" for="tipe-pokemon">
+                                        Fairy
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="tipe-pokemon" id="tipe-pokemon">
+                                    <label class="form-check-label" for="tipe-pokemon">
+                                        Electric
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="tipe-pokemon" id="tipe-pokemon">
+                                    <label class="form-check-label" for="tipe-pokemon">
+                                        Dark
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Pokemon Name: </label>
+                                <input type="text" class="form-control" id="poke-name" name="poke-name" required />
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please input your pokemon name.
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Capacity: </label>
+                                <input type="number" class="form-control" id="capacity" name="capacity"required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Size Of Pokemon: </label>
+                                <select class="form-select" aria-label="Default select example" required>
+                                    <option>Open this select menu required</option> 
+                                    <option value="Small">Small</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Large">Large</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a shipping option.
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Have a Coupon?</label>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option>Open this select menu</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Method Payment: </label>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option>Open this select menu</option>
+                                    <option value="1">Dana</option>
+                                    <option value="2">Shopee</option>
+                                    <option value="3">Transfer Bank</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Shipping Option: </label>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option>Open this select menu</option>
+                                    <option value="JNE">JNE</option>
+                                    <option value="JNT">JNT</option>
+                                    <option value="Shopee">Shopee</option>
+                                    <option value="Sicepat">Sicepat</option>
+                                </select>
+                            </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="employeeModalLabel">Add Employee</h5>
+            </div>
+            <div class="modal-body" id="employeeModalBody">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">NIK: </label>
+                            <input type="text" class="form-control" id="employee-nik" name="employee-nik" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">First Name: </label>
+                            <input type="text" class="form-control" id="employee-fname" name="employee-fname" required />
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please input your first name.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Last Name: </label>
+                            <input type="text" class="form-control" id="employee-lname" name="employee-lname" />
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please input your last name.
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Birthdate: </label>
+                            <input type="date" class="form-control" id="employee-bdate" name="employee-bdate" />
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="employee-gender" id="employee-gender-l">
+                                <label class="form-check-label" for="employee-gender-l">
+                                    Laki-laki
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="employee-gender" id="employee-gender-p">
+                                <label class="form-check-label" for="employee-gender-p">
+                                    Perempuan
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Hiring date: </label>
+                            <input type="date" class="form-control" id="employee-hdate" name="employee-hdate" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Email: </label>
+                            <input type="email" class="form-control" id="employee-email" name="employee-email" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Phone number: </label>
+                            <input type="text" class="form-control" id="employee-pnumber" name="employee-pnumber" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Department ID: </label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option>Open this select menu</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

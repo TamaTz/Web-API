@@ -1,0 +1,91 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background: #eee;
+    margin: 5px;
+    padding: 5px;
+}
+
+* {
+    font-size: small;
+    margin: 5px;
+}
+
+.table-hover tbody tr:hover,
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+    background-color: #904eee;
+    /* Replace with your desired hover color */
+    color: white;
+}
+
+    .table-hover tbody tr:hover button {
+        background-color: yellow;
+        color: black;
+    }
+
+.close:focus {
+    outline: 1px dotted #fff !important;
+}
+
+.modal-body {
+    background-image: url(https://wallpapersmug.com/download/2560x1600/4d7d03/light-colors-geometric-pattern-abstract.jpg);
+}
+
+.modal-title {
+    color: white;
+    text-shadow: 4px 4px 6px black;
+    font-size: 40px;
+    /* Text shadow effect */
+}
+
+    .modal-title:hover {
+        color: yellow;
+        /* Text color on hover */
+    }
+
+
+
+
+
+
+/* Form Register */
+
+.form-label {
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+    /* Warna teks label */
+}
+
+.form-control, .form-select {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    /* Warna border input */
+    color: #555;
+    /* Warna teks input */
+}
+
+.form-check-label {
+    margin-left: 5px;
+}
