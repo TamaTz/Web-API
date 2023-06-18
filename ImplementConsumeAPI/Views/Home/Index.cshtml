@@ -1,15 +1,20 @@
 ﻿@{
     ViewData["Title"] = "Implement";
     Layout = "_Layout";
+    var jwToken = ViewData["JWToken"];
 }
 
+
+<div class="center-container">
+    <textarea id="jwtToken" readonly class="large-textbox">@jwToken</textarea>
+</div>
 @*<div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 *@
 
-<div>
+@*<div>
     <table id="Employee" class="table table-striped table-hover">
         <thead>
             <tr class="table-row mx-auto">
@@ -112,7 +117,7 @@
 
 
 @*//UPDATE*@
-<div class="modal fade" id="updateEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeUpdateModalLabel"
+@*<div class="modal fade" id="updateEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeUpdateModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content ">
@@ -185,4 +190,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@

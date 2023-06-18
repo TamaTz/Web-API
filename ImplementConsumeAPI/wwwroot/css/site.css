@@ -89,3 +89,17 @@ body {
 .form-check-label {
     margin-left: 5px;
 }
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.large-textbox {
+    width: 1000px;
+    height: 500px;
+    font-size: 18px;
+    padding: 10px;
+}

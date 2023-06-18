@@ -53,25 +53,27 @@ namespace API.Repositories
 
             foreach (var employee in employees)
             {
-                var education = educations.FirstOrDefault(e => e.Guid == employee.Guid);
-                var university = universities.FirstOrDefault(u => u.Guid == education.UniversityGuid);
-
-                var empedu = new EmpEdU
+                var education = educations.FirstOrDefault(e => e.Guid == employee?.Guid);
+                var university = universities.FirstOrDefault(u => u.Guid == education?.UniversityGuid);
+                if (education != null && university != null)
                 {
-                    Guid = employee.Guid,   
-                    Nik = employee.Nik,
-                    FullName = employee.FirstName + " " + employee.LastName,
-                    BirthDate = employee.BirthDate,
-                    Gender = employee.Gender.ToString(),
-                    HiringDate = employee.HiringDate,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    Major = education.Major,
-                    Degree = education.Degree,
-                    Gpa = education.Gpa,
-                    UniversityName = university.Name
-                };
-                emped.Add(empedu);
+                    var empedu = new EmpEdU
+                    {
+                        Guid = employee.Guid,
+                        Nik = employee.Nik,
+                        FullName = employee.FirstName + " " + employee.LastName,
+                        BirthDate = employee.BirthDate,
+                        Gender = employee.Gender.ToString(),
+                        HiringDate = employee.HiringDate,
+                        Email = employee.Email,
+                        PhoneNumber = employee.PhoneNumber,
+                        Major = education.Major,
+                        Degree = education.Degree,
+                        Gpa = education.Gpa,
+                        UniversityName = university.Name
+                    };
+                    emped.Add(empedu);
+                }
             }
             return emped;
         }

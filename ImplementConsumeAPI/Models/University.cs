@@ -1,15 +1,11 @@
-﻿using API.Models;
-
-namespace API.View_Models.Universities
+﻿namespace ImplementConsumeAPI.Models
 {
-    public class UniversityVM
+    public class University
     {
-        public Guid? Guid { get; set; }
+        public Guid Guid { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
-
     }
 }

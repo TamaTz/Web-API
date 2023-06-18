@@ -1,7 +1,8 @@
 ﻿using API.Utility;
+using ImplementConsumeAPI.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace API.View_Models.Accounts
+namespace ImplementConsumeAPI.ViewModels
 {
     public class RegisterVM
     {
@@ -17,25 +18,22 @@ namespace API.View_Models.Accounts
         public DateTime HiringDate { get; set; }
 
         [EmailAddress]
-       /* [NIKEmailPhoneValidation(nameof(Email))]*/
+        /* [NIKEmailPhoneValidation(nameof(Email))]*/
         public string Email { get; set; }
 
         [Phone]
-      /*  [NIKEmailPhoneValidation(nameof(PhoneNumber))]*/
+        /*  [NIKEmailPhoneValidation(nameof(PhoneNumber))]*/
         public string PhoneNumber { get; set; }
 
         public string Major { get; set; }
 
         public string Degree { get; set; }
 
-        [Range(0,4)]
+        [Range(0, 4)]
         public float GPA { get; set; }
-
-        //public Guid UniversityGuid { get; set; }
 
         public string UniversityCode { get; set; }
 
-/*        [Display(Name = "University Name")]*/
         public string UniversityName { get; set; }
 
         [PasswordValidation(ErrorMessage = "Password must contain at least 1 number, 1 uppercase, 1 lowercase, 1 symbol, 1 minimum chars")]
@@ -43,6 +41,10 @@ namespace API.View_Models.Accounts
 
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
-        // public University? University { get; set; }
+    }
+    public enum GenderLevel
+    {
+        Female,
+        Male
     }
 }
