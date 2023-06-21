@@ -1,9 +1,11 @@
 ﻿using ImplementConsumeAPI.Models;
 using ImplementConsumeAPI.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImplementConsumeAPI.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository repository;
@@ -13,6 +15,7 @@ namespace ImplementConsumeAPI.Controllers
             this.repository = repository;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var result = await repository.Get();
@@ -39,6 +42,7 @@ namespace ImplementConsumeAPI.Controllers
             return View(employees);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllEmployee()
         {
@@ -67,14 +71,16 @@ namespace ImplementConsumeAPI.Controllers
             return View(employees);
         }
 
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Creates()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create(Employee employee)
+        public async Task<IActionResult> Creates(Employee employee)
         {
             /* if (ModelState.IsValid)
              {*/
@@ -92,6 +98,7 @@ namespace ImplementConsumeAPI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Manager, Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(Employee employee)
         {
@@ -111,6 +118,7 @@ namespace ImplementConsumeAPI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Manager, Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(Guid Guid)
         {
@@ -138,7 +146,8 @@ namespace ImplementConsumeAPI.Controllers
             return View(employee);
         }
 
-        public async Task<IActionResult> Delete(Guid Guid)
+        [Authorize(Roles = "Manager, Admin")]
+        public async Task<IActionResult> Deletes(Guid Guid)
         {
             var result = await repository.Get(Guid);
             var employee = new Employee();
@@ -161,10 +170,11 @@ namespace ImplementConsumeAPI.Controllers
             return View(employee);
         }
 
+        [Authorize(Roles = "Manager, Admin")]
         [HttpPost]
         public async Task<IActionResult> Remove(Guid Guid)
         {
-            var result = await repository.Delete(Guid);
+            var result = await repository.Deletes(Guid);
             if (result.StatusCode == "200")
             {
                 return RedirectToAction(nameof(Index));

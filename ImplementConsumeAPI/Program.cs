@@ -4,33 +4,35 @@ using ImplementConsumeAPI.Repositories.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(GeneralRepository<,>));
 builder.Services.AddScoped<IUniversityRepository, UniversityRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
-        options.TokenValidationParameters = new()
-        {
-            ValidateAudience = true,
-            ValidAudience = builder.Configuration["JWT:Audience"],
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["JWT:Issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero
-        };
-    });
+       .AddJwtBearer(options => {
+           options.RequireHttpsMetadata = false;
+           options.SaveToken = true;
+           options.TokenValidationParameters = new TokenValidationParameters
+           {
+               ValidateAudience = false,
+               ValidAudience = builder.Configuration["JWT:Audience"],
+               ValidateIssuer = false,
+               ValidIssuer = builder.Configuration["JWT:Issuer"],
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+               ValidateLifetime = true,
+               ClockSkew = TimeSpan.Zero
+           };
+       });
+
 
 var app = builder.Build();
 
@@ -47,6 +49,20 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseStatusCodePages(async context =>
+{
+    var response = context.HttpContext.Response;
+
+    if (response.StatusCode.Equals((int)HttpStatusCode.Unauthorized))
+    {
+        response.Redirect("/Unauthorized");
+    }else if(response.StatusCode.Equals((int)HttpStatusCode.Forbidden)){
+        response.Redirect("/Forbidden");
+    }else if(response.StatusCode.Equals((int)HttpStatusCode.NotFound)){
+        response.Redirect("/NotFound");
+    }
+});
+
 app.UseSession();
 
 //Add JWToken to all incoming HTTP Request Header
@@ -62,10 +78,11 @@ app.Use(async (context, next) =>
     await next();
 });
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Logins}/{id?}");
 
 app.Run();

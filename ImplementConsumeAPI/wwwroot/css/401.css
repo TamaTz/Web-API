@@ -1,0 +1,99 @@
+:root {
+    --animation: glitch; /* glitch, hue, fade, shrink */
+    --speed: 2s;
+    --easing: linear;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+
+html, body {
+    display: flex;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background: #111;
+    overflow: hidden;
+}
+
+.gameover {
+    padding: 1em;
+    font-family: "Press Start 2P", Arial, sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    color: #2f99ff;
+    text-shadow: 0px 2px #255fcc;
+    animation: var(--animation) var(--speed) infinite var(--easing);
+}
+
+h1 {
+    font-size: 3em
+}
+
+@keyframes glitch {
+    0%, 12%, 15%, 52%, 55%, 82%, 85%, 100% {
+        opacity: 1;
+        transform: scaleX(1) scaleY(1)
+    }
+
+    13% {
+        opacity: .8;
+        transform: scaleY(2);
+        color: #0ff
+    }
+
+    53% {
+        opacity: .8;
+        transform: scaleX(.7);
+        color: #f0f
+    }
+
+    83% {
+        opacity: .8;
+        transform: rotate(-10deg);
+        color: #ff0
+    }
+}
+
+@keyframes hue {
+    13% {
+        color: #0ff
+    }
+
+    53% {
+        color: #f0f
+    }
+
+    83% {
+        color: #ff0
+    }
+}
+
+@keyframes shrink {
+    0% {
+        transform: scaleY(1)
+    }
+
+    50% {
+        transform: scaleY(.5)
+    }
+
+    100% {
+        transform: scaleY(1)
+    }
+}
+
+@keyframes fade {
+    0% {
+        opacity: 1
+    }
+
+    50% {
+        opacity: 0
+    }
+
+    100% {
+        opacity: 1
+    }
+}

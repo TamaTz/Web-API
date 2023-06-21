@@ -5,7 +5,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>@ViewData["Title"] - ImplementConsumeAPI</title>
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
 
 	<link rel="stylesheet"
 		  href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
@@ -24,12 +23,12 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
 	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" />
-	<link href="https://fonts.googleapis.com/css?family=Orbitron&display=swap" rel="stylesheet">
 </head>
 <body>
 	<header>
-		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light text-light border-bottom box-shadow mb-3">
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 			<div class="container-fluid">
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Client</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -37,49 +36,45 @@
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
 						<li class="nav-item">
-							<a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-light" asp-area="" asp-controller="University" asp-action="Index">University</a>
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-light" asp-area="" asp-controller="Employee" asp-action="Index">Employee</a>
-						</li>
-						@*<li class="nav-item">
-							<a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Registers">Register</a>
+							<a class="nav-link text-dark" asp-area="" asp-controller="University" asp-action="">University</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Logins">Login</a>
-						</li>*@
+							<a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="">Employee</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Registers">Register</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logins">Login</a>
+						</li>
 					</ul>
 				</div>
 			</div>
 		</nav>
 	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
 	
-			<div id="controls">
-				<span id="squareCount"></span>
-				<div id="themes"></div>
-				<main role="main" class="pb-3">
-					@RenderBody()
-				</main>
-			</div>
-			<svg>
-				<g></g>
-			</svg>
-		
-	@*<footer class="border-top footer text-muted">
+	<footer class="border-top footer text-muted">
 		<div class="container">
 			&copy; 2023 - Client - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 		</div>
-	</footer>*@
+	</footer>
 
 	@*<script src="~/js/starwarJs.js" asp-append-version="true"></script>
 	<script src="~/js/latihanJs.js" asp-append-version="true"></script>*@
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
-	<script src="~/js/home.js" asp-append-version="true"></script>
 
 	@*<script src="~/js/valorantJs.js" asp-append-version="true"></script>*@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -101,4 +96,50 @@
 			crossorigin="anonymous"></script>
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+	<meta name="author" content="Creative Tim">
+	<title>401</title>
+	<!-- Favicon -->
+	<link rel="icon" href="~/assets/img/brand/favicon.png" type="image/png">
+	<!-- Fonts -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+	<!-- Icons -->
+	<link rel="stylesheet" href="~/assets/vendor/nucleo/css/nucleo.css" type="text/css">
+	<!-- Page plugins -->
+	<link href="~/assets/vendor/fontawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+	<!-- Argon CSS -->
+</head>
+
+<body class="bg-danger">
+	<!-- Main content -->
+	<div class="main-content">
+		<!-- Header -->
+		<div class="header bg-primary pt-5 pb-7">
+			<div class="container mt-9">
+				@RenderBody();
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Argon Scripts -->
+	<!-- Core -->
+	<script src="~/assets/vendor/jquery/dist/jquery.min.js"></script>
+	<script src="~/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/assets/vendor/js-cookie/js.cookie.js"></script>
+	<script src="~/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+	<script src="~/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+	<!-- Argon JS -->
+	<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	@RenderSection("Scripts", required: false)
+</body>
+
+</html>
 </html>

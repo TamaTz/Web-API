@@ -8,6 +8,6 @@ namespace ImplementConsumeAPI.Repositories.Interface
         Task<ResponseViewModel<T>> Get(X Guid);
         Task<ResponseMessageVM> Post(T AllEntity);
         Task<ResponseMessageVM> Put(T AllEntity);
-        Task<ResponseMessageVM> Delete(X Guid);
+        Task<ResponseMessageVM> Deletes(X Guid);
     }
 }

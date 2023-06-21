@@ -3,11 +3,25 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<style>
+    *{
+        color: #ffff;
+    }
+    .table{
+        margin-left: 15em;
+        
+    }
+    h1{
+        margin-left: 12em;
+    }
+    p a{
+       margin-left: 37em; 
+    }
+</style>
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Creates">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -51,7 +65,7 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new {item.Guid /* id=item.PrimaryKey */ }) |
                @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
-                @Html.ActionLink("Delete", "Delete", new {item.Guid /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Delete", "Deletes", new {item.Guid /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }

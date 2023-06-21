@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{3B7538E1-6E92-45C9-A70F-97E674660F28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImplementConsumeAPI", "ImplementConsumeAPI\ImplementConsumeAPI.csproj", "{8E91AAF5-92E3-4DC2-95A9-160EABDEBC81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImplementConsumeAPI", "ImplementConsumeAPI\ImplementConsumeAPI.csproj", "{8E91AAF5-92E3-4DC2-95A9-160EABDEBC81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

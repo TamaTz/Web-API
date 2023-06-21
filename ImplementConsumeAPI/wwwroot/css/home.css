@@ -1,0 +1,91 @@
+html,
+body,
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: white;
+    background-color: black;
+    position: relative;
+    font-family: "Orbitron", sans-serif;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+select {
+    background-color: black;
+    color: white;
+    font-family: "Orbitron", sans-serif;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+div#controls {
+    margin: auto;
+    position: absolute;
+    text-align: center;
+}
+
+#marquee {
+    text-shadow: 0 0 10px white;
+}
+
+/**********PRESETS************/
+body.glass rect {
+    opacity: 0.8;
+}
+
+.RGB rect {
+    transition: fill 5s;
+}
+
+.RGB .yellow {
+    fill: rgba(243, 239, 25, 0.7);
+}
+
+.RGB .red {
+    fill: rgba(255, 0, 0, 0.7);
+}
+
+.RGB .blue {
+    fill: rgba(0, 0, 255, 0.7);
+}
+
+.RGB .green {
+    fill: rgba(82, 197, 16, 0.7);
+}
+
+body.particles {
+    background-color: rgba(10, 10, 15, 1);
+}
+
+.maze .blocker {
+    transition: fill 5s;
+    fill: white;
+}
+
+.maze .base {
+    fill: black;
+}
+
+.maze .solid1 {
+    fill: rgb(238, 186, 17);
+}
+
+.maze .solid2 {
+    fill: cyan;
+}
+
+.maze .solid3 {
+    fill: rgb(248, 171, 184);
+    ;
+}
+
+.maze .solid4 {
+    fill: rgb(236, 6, 6);
+}

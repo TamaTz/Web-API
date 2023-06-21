@@ -3,11 +3,15 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<style>
+    * {
+        color: #ffff;
+    }
+</style>
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Creates">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -87,7 +91,7 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new {item.Guid /* id=item.PrimaryKey */ }) |
                     @Html.ActionLink("GetAllEmployee", "GetAllEmployee", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new {item.Guid /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Delete", "Deletes", new {item.Guid /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }

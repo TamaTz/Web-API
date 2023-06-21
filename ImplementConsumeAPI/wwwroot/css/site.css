@@ -14,7 +14,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  margin-bottom: 10px;
 }
 
 body {
@@ -63,10 +63,6 @@ body {
     }
 
 
-
-
-
-
 /* Form Register */
 
 .form-label {
@@ -103,3 +99,4 @@ body {
     font-size: 18px;
     padding: 10px;
 }
+

@@ -1,38 +1,165 @@
 ﻿@model ImplementConsumeAPI.ViewModels.LoginVM
 
 @{
-    ViewData["Title"] = "Logins";
+    Layout = null;
 }
 
-<h1>Logins</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<h4>LoginVM</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Logins">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" />
-            </div>
-        </form>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <style>
+        @@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+
+        * {
+            font-family: "Press Start 2P", cursive;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: black;
+            flex-direction: column;
+            color: #54fe55;
+        }
+
+        *::selection {
+            background: #1a4f1a;
+        }
+
+        .welcome .line {
+            overflow: hidden;
+            width: 0px;
+            text-shadow: 0px 0px 10px #54fe55;
+            height: 1rem;
+            text-align: left;
+        }
+
+        .welcome .line1 {
+            animation: type 0.5s 1s steps(20, end) forwards;
+        }
+
+        .welcome .line2 {
+            animation: type 0.5s 1.5s steps(20, end) forwards;
+        }
+
+        .welcome .line3 {
+            animation: type 0.5s 2s steps(20, end) forwards;
+        }
+
+        @@keyframes type {
+            to {
+                width: 280px;
+            }
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 300px;
+        }
+
+            form label {
+                margin-bottom: 1rem;
+                display: flex;
+                flex-direction: column;
+                text-shadow: 0px 0px 10px #54fe55;
+            }
+
+            form input {
+                background: black;
+                border: 1px solid #54fe55;
+                margin-top: 0.5rem;
+                padding: 0.5rem;
+                color: #54fe55;
+                text-shadow: 0px 0px 10px #54fe55;
+                box-shadow: 0px 0px 5px #54fe55;
+            }
+
+                form input:focus {
+                    outline: none;
+                }
+
+            form button {
+                padding: 0.5rem;
+                background: #1a4f1a;
+                color: #54fe55;
+                border: 0;
+                text-shadow: 0px 0px 10px #54fe55;
+                box-shadow: 0px 0px 10px #1a4f1a;
+                cursor: pointer;
+            }
+
+                form button:focus {
+                    outline: none;
+                }
+
+        @@keyframes blink {
+            0% {
+                opacity: 0;
+            }
+
+            49% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .blink {
+            animation-name: blink;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+        }
+    </style>
+</head>
+<body>
+    <h1>Login</h1>
+
+    @*<h4>LoginVM</h4>*@
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Logins">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <p class="welcome">
+                    <div class="line line1">WELCOME TO #$%&?! </div>
+                    <div class="line line2">please enter your </div>
+                    <div class="line line3">credentials.<span class="blink">_</span></div>
+                </p>
+                <label asp-for="Email" class="control-label">
+                    Email:
+                    <input asp-for="Email" class="form-control">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </label>
+                <label asp-for="Password" class="control-label">
+                    Password:
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </label>
+                <p><button type="submit" value="Login">[ Login ]</button></p>
+                <p><span>Sign Up..?</span><a href="/Account/Registers">Here.</a></p>
+                
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
+    @*<div>
     <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    </div>*@
+</body>
+</html>

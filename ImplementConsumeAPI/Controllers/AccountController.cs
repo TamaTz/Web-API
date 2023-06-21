@@ -1,4 +1,5 @@
-﻿using ImplementConsumeAPI.Repositories.Interface;
+﻿using API.Models;
+using ImplementConsumeAPI.Repositories.Interface;
 using ImplementConsumeAPI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -73,5 +74,11 @@ namespace ImplementConsumeAPI.Controllers
             return RedirectToAction("Index", "Employee");
         }
 
+        [HttpGet("/Logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return Redirect("/Account/Logins");
+        }
     }
 }

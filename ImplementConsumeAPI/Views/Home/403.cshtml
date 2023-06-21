@@ -1,0 +1,39 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>403 - Forbidden</title>
+    <link type="text/css" rel="stylesheet" href="css/403.css" />
+</head>
+
+<body>
+
+    <div id="app">
+        <div>403</div>
+        <div class="txt">
+            <p>Forbidden<span class="blink">_</span></p>
+            <p>You Don't Have Access!<span class="blink">_</span></p>
+            <p>it seems you're lost!<span class="blink">_</span></p>
+            <a id="countdown"></a>
+        </div>
+    </div>
+</body>
+
+<script>
+    let timer = 20
+    setInterval(() => {
+        document.getElementById('countdown').innerHTML = timer;
+        timer--;
+
+        if (timer === 0) {
+            location.href = "/";
+        }
+    }, 1000)
+</script>
+</html>

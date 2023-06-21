@@ -3,16 +3,25 @@
     Layout = "_Layout";
     var jwToken = ViewData["JWToken"];
 }
-
-
-<div class="center-container">
+<style>
+    h1{
+        margin-left: 11em;
+    }
+    p{
+        margin-left: 50em;
+    }
+</style>
+<link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="/Logout">Logout Here</a>.</p>
+</div>
+@*<div class="center-container">
     <textarea id="jwtToken" readonly class="large-textbox">@jwToken</textarea>
 </div>
-@*<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
 *@
+
+
 
 @*<div>
     <table id="Employee" class="table table-striped table-hover">

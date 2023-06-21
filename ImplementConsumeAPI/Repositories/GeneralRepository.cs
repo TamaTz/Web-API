@@ -14,15 +14,15 @@ namespace ImplementConsumeAPI.Repositories
         public GeneralRepository(string request)
         {
             this.request = request;
-            contextAccessor = new HttpContextAccessor();
-            httpClient = new HttpClient
+          /*  contextAccessor = new HttpContextAccessor();
+          */  httpClient = new HttpClient
             {
                 BaseAddress = new Uri("https://localhost:7065/api/")
             };
             // Ini yg bawah skip dulu
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", contextAccessor.HttpContext?.Session.GetString("JWToken"));
-        }
-        public async Task<ResponseMessageVM> Delete(Tid Guid)
+       /*     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", contextAccessor.HttpContext?.Session.GetString("JWToken"));
+        */}
+        public async Task<ResponseMessageVM> Deletes(Tid Guid)
         {
             ResponseMessageVM entityVM = null;
             using (var response = httpClient.DeleteAsync(request + Guid).Result)

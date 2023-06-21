@@ -1,16 +1,24 @@
 ﻿@model ImplementConsumeAPI.Models.Employee
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Creates";
 }
+<style>
+    * {
+        color: #ffff;
+    }
 
-<h1>Create</h1>
+    .form-control {
+        width: 300px;
+    }
+</style>
+<h1>Creates</h1>
 
 <h4>Employee</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" method="post">
+        <form asp-action="Creates" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group" hidden>
                 <label asp-for="Guid" class="control-label"></label>

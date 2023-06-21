@@ -1,9 +1,11 @@
 ﻿using ImplementConsumeAPI.Models;
 using ImplementConsumeAPI.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImplementConsumeAPI.Controllers
 {
+    [Authorize]
     public class UniversityController : Controller
     {
         private readonly IUniversityRepository repository;
@@ -12,6 +14,7 @@ namespace ImplementConsumeAPI.Controllers
             this.repository = repository;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var result = await repository.Get();
@@ -32,14 +35,16 @@ namespace ImplementConsumeAPI.Controllers
             return View(universities);
         }
 
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Creates()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create(University university)
+        public async Task<IActionResult> Creates(University university)
         {
            /* if (ModelState.IsValid)
             {*/
@@ -57,6 +62,7 @@ namespace ImplementConsumeAPI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Manager, Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(University university)
         {
@@ -76,6 +82,7 @@ namespace ImplementConsumeAPI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Manager, Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(Guid Guid)
         {
@@ -96,8 +103,9 @@ namespace ImplementConsumeAPI.Controllers
 
             return View(university);
         }
-      
-        public async Task<IActionResult> Delete(Guid Guid)
+
+        [Authorize(Roles = "Manager, Admin")]
+        public async Task<IActionResult> Deletes(Guid Guid)
         {
             var result = await repository.Get(Guid);
             var university = new University();
@@ -114,10 +122,11 @@ namespace ImplementConsumeAPI.Controllers
             return View(university);
         }
 
+        [Authorize(Roles = "Manager, Admin")]
         [HttpPost]
         public async Task<IActionResult> Remove(Guid Guid)
         {
-            var result = await repository.Delete(Guid);
+            var result = await repository.Deletes(Guid);
             if (result.StatusCode == "200")
             {
                 return RedirectToAction(nameof(Index));
